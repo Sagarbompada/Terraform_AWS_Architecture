@@ -79,8 +79,8 @@ resource "aws_vpc_security_group_egress_rule" "foralloutbound" {
 }
 
 #Creating S3 bucket
-resource "aws_s3_bucket" "mytestprojects3" {
-  bucket = "mytestprojects3"
+resource "aws_s3_bucket" "myterraformprojectbucket2026" {
+  bucket = "myterraformprojectbucket2026"
 
   tags = {
     Name        = "My bucket"

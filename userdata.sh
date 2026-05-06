@@ -12,11 +12,8 @@ http://169.254.169.254/latest/meta-data/instance-id)
 # Install the AWS CLI
 apt install -y awscli
 
-# Download the images from S3 bucket
-aws s3 cp s3://myterraformprojectbucket2023/project.webp /var/www/html/project.png --acl public-read
-
 # Pull file from S3 (MAKE SURE bucket name is correct)
-aws s3 cp s3://mytestprojects3-unique123/project.webp /var/www/html/project.webp
+aws s3 cp s3://myterraformprojectbucket2026/project.webp /var/www/html/project.webp
 
 # Create a simple HTML file with the portfolio content and display the images
 cat <<EOF > /var/www/html/index.html

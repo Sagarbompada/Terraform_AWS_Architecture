@@ -13,7 +13,10 @@ http://169.254.169.254/latest/meta-data/instance-id)
 apt install -y awscli
 
 # Download the images from S3 bucket
-#aws s3 cp s3://myterraformprojectbucket2023/project.webp /var/www/html/project.png --acl public-read
+aws s3 cp s3://myterraformprojectbucket2023/project.webp /var/www/html/project.png --acl public-read
+
+# Pull file from S3 (MAKE SURE bucket name is correct)
+aws s3 cp s3://mytestprojects3-unique123/project.webp /var/www/html/project.webp
 
 # Create a simple HTML file with the portfolio content and display the images
 cat <<EOF > /var/www/html/index.html
@@ -37,6 +40,7 @@ cat <<EOF > /var/www/html/index.html
   <h1>Terraform Project Server 1</h1>
   <h2>Instance ID: <span style="color:green">$INSTANCE_ID</span></h2>
   <p>Welcome to Project1 instance1</p>
+  <img src="project.webp" width="300"/>
   
 </body>
 </html>

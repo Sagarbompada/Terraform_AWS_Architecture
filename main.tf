@@ -88,6 +88,32 @@ resource "aws_s3_bucket" "mytestprojects3" {
   }
 }
 
+# IAM Role for EC2 to access S3
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2_s3_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+# Permissions for Roles
+resource "aws_iam_role_policy_attachment" "s3_access" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+}
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_profile"
+  role = aws_iam_role.ec2_role.name
+}
+
 #Creating Instances
 resource "aws_instance" "webserver1" {
   ami                    = "ami-04b70fa74e45c3917"
@@ -95,6 +121,7 @@ resource "aws_instance" "webserver1" {
   vpc_security_group_ids = [aws_security_group.myWebSg.id]
   subnet_id              = aws_subnet.subnet1.id
   user_data              = file("userdata.sh")
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   tags = {
     Name = "WebServer1"
   }
@@ -106,6 +133,7 @@ resource "aws_instance" "webserver2" {
   vpc_security_group_ids = [aws_security_group.myWebSg.id]
   subnet_id              = aws_subnet.subnet2.id
   user_data              = file("userdata1.sh")
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   tags = {
     Name = "WebServer2"
   }
